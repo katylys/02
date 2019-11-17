@@ -1,12 +1,16 @@
-import { Shortener, Redirection } from "../shortener/types";
+import { Shortener, Redirection, Statistic } from "../shortener/types";
 import { Validator } from 'class-validator'
 
-export const IsValidRequestShort = (params: Shortener.Request): boolean => {
-    const validator = new Validator()
+const validator = new Validator()
+
+export const ShortenerReq = (params: Shortener.Request): boolean => {
     return /* validator.isString(params.userID) &&  */validator.isString(params.longURL)
 }
 
-export  const IsValidReqRedirect = (params: Redirection.Request): boolean => {
-    const validator = new Validator()
+export const RedirectionReq = (params: Redirection.Request): boolean => {
+    return validator.isString(params.shortURL)
+}
+
+export const StatisticReq = (params: Statistic.Request): boolean => {
     return validator.isString(params.shortURL)
 }

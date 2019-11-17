@@ -3,16 +3,15 @@ exports.__esModule = true;
 var mongodb_1 = require("mongodb");
 var express = require("express");
 var bodyParser = require("body-parser");
-var shorten_1 = require("./shortener/shorten");
-var redirect_1 = require("./redirection/redirect");
+var createError = require("http-errors");
+var routing_1 = require("./routing");
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-var db;
 exports.MONGOURL = 'mongodb://localhost:27017';
 exports.clientMongo = mongodb_1.MongoClient.connect(exports.MONGOURL, { useUnifiedTopology: true, useNewUrlParser: true })
     .then(function (client) {
-    db = client.db('Shortener02');
+    exports.db = client.db('Shortener02');
     client.db('Shortener02').collection('Counter').insertOne({
         count: 1
     });
@@ -24,13 +23,10 @@ exports.clientMongo = mongodb_1.MongoClient.connect(exports.MONGOURL, { useUnifi
 //app//.use(router.routes())
 //.use(router.allowedMethods())
 //  .use(bodyParser())
-/* app.use('/', (req, res) => {
-  res.status(200).send({
-    message: 'ok',
-  })
-}) */
-app.use('/shortener', function (req, res) { return shorten_1.Shorten(req, res, db); });
-app.use('/:shortURL', function (req, resp) { return redirect_1.Redirect(req, resp, db); });
+app.use('/', routing_1.getRouter());
+app.use(function (req, res, next) {
+    next(createError(404));
+});
 app.set('port', 4000);
 var server = app.listen(app.get('port'), function () {
     console.log("Express running \u2192 PORT " + app.get('port'));

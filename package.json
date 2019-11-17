@@ -4,7 +4,10 @@
   "description": "Предположим, мы хотим написать свой собственный сокращатель ссылок (такой, как bit.ly), и попросили вас написать API, который будет реализовывать основную функциональность сервиса.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc src/main.ts --outDir dist",
+    "lint": "tslint -p src && tslint -p test",
+    "mochaTest": "mocha",
+    "start": "tsc src/main.ts && node src/main.js"
   },
   "repository": {
     "type": "git",
@@ -26,11 +29,11 @@
     "@types/koa": "^2.0.52",
     "@types/mongodb": "^3.3.10",
     "@types/nanoid": "^2.1.0",
-    "@types/typescript": "^2.0.0",
     "body-parser": "^1.19.0",
     "class-validator": "^0.11.0",
     "express": "^4.17.1",
     "express-ctx": "^0.1.1",
+    "http-error": "0.0.6",
     "http-errors": "^1.7.3",
     "koa": "^2.11.0",
     "mongodb": "^3.3.4",

@@ -1,9 +1,9 @@
 
-import { IsValidRequestShort } from '../validation/validate'
+import { ShortenerReq } from '../validation/validate'
 import { Request, Response } from 'express'
 import { Db } from 'mongodb'
 import { DB } from '../store/dbTypes'
-import nanoid = require('nanoid')
+const nanoid = require('nanoid')
 
 export const Shorten = async (req: Request, resp: Response, db: Db) => {
     try {
@@ -14,19 +14,11 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    if (!IsValidRequestShort(req.query)) {
+    if (!ShortenerReq(req.query)) {
         return resp.status(400).send({
             message: 'Not valid data',
         })
     }
-
-    /* console.log(db)
-    await db.collection('URLs').insertOne({
-        longURL: req.query.longURL,
-        shortURL:nanoid(1),
-        usage: 0,
-        maker: req.ip,
-    }) */
 
     const existURL = await db.collection('URLs').findOne({ longURL: req.query.longURL })
 
@@ -66,6 +58,5 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
             message: 'Error of db',
         })
     }
-    console.log('ok')
     return resp.status(200).send({ shortURL })
 }

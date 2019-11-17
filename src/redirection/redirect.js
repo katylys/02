@@ -42,7 +42,7 @@ exports.Redirect = function (req, resp, db) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!validate_1.IsValidReqRedirect(req.params)) {
+                if (!validate_1.RedirectionReq(req.params)) {
                     return [2 /*return*/, resp.status(400).send({
                             message: 'not valid data'
                         })];

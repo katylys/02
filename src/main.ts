@@ -1,14 +1,14 @@
 import { MongoClient, Db } from 'mongodb'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
-import { Shorten } from './shortener/shorten';
-import { Redirect } from './redirection/redirect';
+import * as createError from 'http-errors'
+import { getRouter } from './routing';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-let db: Db
+export let db: Db
 export const MONGOURL = 'mongodb://localhost:27017'
 export const clientMongo = MongoClient.connect(MONGOURL, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(client => {
@@ -27,14 +27,10 @@ export const clientMongo = MongoClient.connect(MONGOURL, { useUnifiedTopology: t
 //.use(router.allowedMethods())
 //  .use(bodyParser())
 
-/* app.use('/', (req, res) => {
-  res.status(200).send({
-    message: 'ok',
-  })
-}) */
-
-app.use('/shortener', (req, res) => Shorten(req, res, db))
-app.use('/:shortURL', (req, resp) => Redirect(req, resp, db))
+app.use('/', getRouter())
+app.use(function (req, res, next) {
+  next(createError(404));
+})
 app.set('port', 4000)
 
 const server = app.listen(app.get('port'), () => {

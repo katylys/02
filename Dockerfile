@@ -1,8 +1,11 @@
-FROM mongo:3.6.3-jessie
+FROM node:latest
 
-COPY dev.dump .
+WORKDIR /usr/src/app
 
-COPY mongo.sh mongo.sh
-RUN chmod 777 mongo.sh
+COPY package*.json ./
+RUN npm install
 
-ENTRYPOINT ./mongo.sh
+COPY . .
+
+EXPOSE 4000
+CMD npm start

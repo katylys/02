@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { Db } from "mongodb";
-import { IsValidReqRedirect } from "../validation/validate";
+import { RedirectionReq } from "../validation/validate";
 import { Redirection } from "../shortener/types";
 
 export const Redirect = async (req: Request, resp: Response, db: Db) => {
-    if (!IsValidReqRedirect(req.params as Redirection.Request)) {
+    if (!RedirectionReq(req.params as Redirection.Request)) {
         return resp.status(400).send({
             message: 'not valid data',
         })

@@ -36,70 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var validate_1 = require("../validation/validate");
-var nanoid = require('nanoid');
-exports.Shorten = function (req, resp, db) { return __awaiter(void 0, void 0, void 0, function () {
-    var existURL, counter, shortURL, existShortURL, updateCounter, insertURL;
+exports.MyURLs = function (req, resp, db) { return __awaiter(void 0, void 0, void 0, function () {
+    var userIp, cursor, listURLs, myURLs;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                try {
-                    new URL(req.query.longURL);
-                }
-                catch (error) {
-                    return [2 /*return*/, resp.status(400).send({
-                            message: 'such a link does not exist'
-                        })];
-                }
-                if (!validate_1.ShortenerReq(req.query)) {
-                    return [2 /*return*/, resp.status(400).send({
-                            message: 'Not valid data'
-                        })];
-                }
-                return [4 /*yield*/, db.collection('URLs').findOne({ longURL: req.query.longURL })];
+                userIp = req.ip;
+                return [4 /*yield*/, db.collection('URLs').find({
+                        maker: userIp
+                    })];
             case 1:
-                existURL = _a.sent();
-                if (existURL) {
+                cursor = _a.sent();
+                if (!cursor) {
                     return [2 /*return*/, resp.status(200).send({
-                            shortURL: existURL.shortURL
+                            URLs: []
                         })];
                 }
-                return [4 /*yield*/, db.collection('Counter').findOne({})];
+                return [4 /*yield*/, cursor.toArray()];
             case 2:
-                counter = _a.sent();
-                shortURL = nanoid(counter.count);
-                return [4 /*yield*/, db.collection('URLs').findOne({ shortURL: shortURL })];
-            case 3:
-                existShortURL = _a.sent();
-                if (!existShortURL) return [3 /*break*/, 5];
-                return [4 /*yield*/, db.collection('Counter').findOneAndUpdate({}, {
-                        $inc: {
-                            counter: 1
-                        }
-                    }, { returnOriginal: false })];
-            case 4:
-                updateCounter = _a.sent();
-                if (!updateCounter) {
-                    return [2 /*return*/, resp.status(500).send({
-                            message: "Error of db"
-                        })];
-                }
-                shortURL = nanoid(updateCounter.value.count);
-                _a.label = 5;
-            case 5: return [4 /*yield*/, db.collection('URLs').insertOne({
-                    longURL: req.query.longURL,
-                    shortURL: shortURL,
-                    usage: 0,
-                    maker: req.ip
-                })];
-            case 6:
-                insertURL = _a.sent();
-                if (!insertURL) {
-                    return [2 /*return*/, resp.status(500).send({
-                            message: 'Error of db'
-                        })];
-                }
-                return [2 /*return*/, resp.status(200).send({ shortURL: shortURL })];
+                listURLs = _a.sent();
+                myURLs = listURLs.map(function (field) {
+                    return {
+                        longURL: field.longURL,
+                        shortURL: field.shortURL
+                    };
+                });
+                return [2 /*return*/, resp.status(200).send({
+                        myURLs: myURLs
+                    })];
         }
     });
 }); };

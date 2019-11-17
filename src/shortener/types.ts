@@ -13,3 +13,12 @@ export namespace Redirection {
     }
     export type Response = void
 }
+
+export namespace Statistic {
+    export type Request = {
+        shortURL: string,
+    }
+    export type Response = {
+        usage: number,
+    }
+}
