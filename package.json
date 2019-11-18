@@ -2,12 +2,12 @@
   "name": "02",
   "version": "1.0.0",
   "description": "Предположим, мы хотим написать свой собственный сокращатель ссылок (такой, как bit.ly), и попросили вас написать API, который будет реализовывать основную функциональность сервиса.",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "tsc src/main.ts --outDir dist",
+    "build": "tsc src/main.ts",
     "lint": "tslint -p src && tslint -p test",
     "mochaTest": "mocha",
-    "start": "tsc src/main.ts && node src/main.js"
+    "start": "tsc main.ts && docker-compose up -d && node main.js"
   },
   "repository": {
     "type": "git",

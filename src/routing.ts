@@ -2,7 +2,7 @@ import { Shorten } from "./shortener/shorten";
 import { MyURLs } from "./list/myURLs";
 import { Statistic } from "./statistic/statistic";
 import { Redirect } from "./redirection/redirect";
-import { db } from "./main";
+import { db } from "../main";
 import * as express from 'express'
 
 export const getRouter = () => {

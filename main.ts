@@ -2,7 +2,7 @@ import { MongoClient, Db } from 'mongodb'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import * as createError from 'http-errors'
-import { getRouter } from './routing';
+import { getRouter } from './src/routing';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
