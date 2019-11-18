@@ -20,7 +20,7 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const existURL = await db.collection('URLs').findOne({ longURL: req.query.longURL })
+    const existURL = await db.collection(DB.storeURLs).findOne({ longURL: req.query.longURL })
 
     if (existURL) {
         return resp.status(200).send({
@@ -28,26 +28,31 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const counter = await db.collection<DB.Counter>('Counter').findOne({})
+    const counter = await db.collection<DB.Counter>(DB.storeCounter).findOne({})
+    if (!counter) {
+        return resp.status(500).send({
+            message: 'error of db',
+        })
+    }
     let shortURL = nanoid(counter.count)
-    const existShortURL = await db.collection<DB.URLs>('URLs').findOne({ shortURL })
+    const existShortURL = await db.collection<DB.URLs>(DB.storeURLs).findOne({ shortURL })
 
     if (existShortURL) {
-        const updateCounter = await db.collection<DB.Counter>('Counter').findOneAndUpdate({}, {
+        const updateCounter = await db.collection<DB.Counter>(DB.storeCounter).findOneAndUpdate({}, {
             $inc: {
                 counter: 1,
             },
         },
             { returnOriginal: false },
         )
-        if (!updateCounter) {
+        if (!updateCounter.value) {
             return resp.status(500).send({
                 message: "Error of db",
             })
-        }
+        } 
         shortURL = nanoid(updateCounter.value.count)
     }
-    const insertURL = await db.collection<DB.URLs>('URLs').insertOne({
+    const insertURL = await db.collection<DB.URLs>(DB.storeURLs).insertOne({
         longURL: req.query.longURL,
         shortURL,
         usage: 0,

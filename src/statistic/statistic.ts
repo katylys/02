@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
-import { Db } from "mongodb";
-import { StatisticReq } from "../validation/validate";
-import { DB } from "../store/dbTypes";
+import { Request, Response } from "express"
+import { Db } from "mongodb"
+import { StatisticReq } from "../validation/validate"
+import { DB } from "../store/dbTypes"
 
-export const Statistic = async (req: Request, resp: Response, db: Db) => {
+export const GetStatistic = async (req: Request, resp: Response, db: Db) => {
     if (!StatisticReq(req.query)) {
         return resp.status(400).send({
             message: 'not valid dara',
         })
     }
-    const usage = await db.collection<DB.URLs>('URLs').findOne(
+    const usage = await db.collection<DB.URLs>(DB.storeURLs).findOne(
         {
             shortURL: req.query.shortURL,
         },

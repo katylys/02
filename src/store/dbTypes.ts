@@ -9,12 +9,6 @@ export namespace DB {
         maker: string,
         usage: number | 0,
     }
-    export const storeUsers = 'Users'
-    export type User = {
-        _id: ObjectID,
-        userID: string,
-        URLs: ObjectID[],
-    }
     export const storeCounter = 'Counter'
     export type Counter = {
         _id: ObjectID,

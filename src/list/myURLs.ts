@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import { Db } from "mongodb";
-import { DB } from "../store/dbTypes";
+import { Request, Response } from "express"
+import { Db } from "mongodb"
+import { DB } from "../store/dbTypes"
 
 export const MyURLs = async (req: Request, resp: Response, db: Db) => {
     const userIp = req.ip
-    const cursor = await db.collection<DB.URLs>('URLs').find({
+    const cursor = await db.collection<DB.URLs>(DB.storeURLs).find({
         maker: userIp,
     })
     if (!cursor) {

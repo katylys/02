@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "build": "tsc src/main.ts",
+    "compile": "tsc -p src --noEmit && tsc -p test --noEmit",
     "lint": "tslint -p src && tslint -p test",
     "mochaTest": "mocha",
     "start": "tsc main.ts && docker-compose up -d && node main.js"
@@ -21,23 +22,28 @@
   },
   "homepage": "https://github.com/katylys/02#readme",
   "dependencies": {
-    "@ctx/context": "^1.2.0",
-    "@ctx/express": "^1.1.0",
     "@types/body-parser": "^1.17.1",
     "@types/express": "^4.17.2",
     "@types/http-errors": "^1.6.2",
     "@types/koa": "^2.0.52",
+    "@types/mocha": "^5.2.7",
     "@types/mongodb": "^3.3.10",
     "@types/nanoid": "^2.1.0",
+    "@types/sinon": "^7.5.0",
     "body-parser": "^1.19.0",
     "class-validator": "^0.11.0",
     "express": "^4.17.1",
-    "express-ctx": "^0.1.1",
-    "http-error": "0.0.6",
     "http-errors": "^1.7.3",
     "koa": "^2.11.0",
+    "mocha": "^6.2.2",
     "mongodb": "^3.3.4",
     "nanoid": "^2.1.6",
+    "sinon": "^7.5.0",
+    "supertest": "^4.0.2",
+    "ts-node": "^8.5.2",
     "typescript": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/supertest": "^2.0.8"
   }
 }
