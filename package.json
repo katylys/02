@@ -1,0 +1,54 @@
+{
+  "name": "02",
+  "version": "1.0.0",
+  "description": "Предположим, мы хотим написать свой собственный сокращатель ссылок (такой, как bit.ly), и попросили вас написать API, который будет реализовывать основную функциональность сервиса.",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc src/main.ts",
+    "compile": "tsc -p src --noEmit && tsc -p test --noEmit",
+    "lint": "tslint -p src && tslint -p test",
+    "lint-fix": "tslint -p src --fix && tslint -p test --fix",
+    "test": "mocha",
+    "start": "tsc src/main.ts && node src/main.js",
+    "dockerServer": "docker-compose up --build",
+    "dockerTest": "cd test/ && docker-compose up --build -d && yarn test --delay --exit && docker-compose down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/katylys/02.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/katylys/02/issues"
+  },
+  "homepage": "https://github.com/katylys/02#readme",
+  "dependencies": {
+    "@ctx/context": "^1.2.0",
+    "@ctx/express": "^1.1.0",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.2",
+    "@types/http-errors": "^1.6.2",
+    "@types/koa": "^2.0.52",
+    "@types/mocha": "^5.2.7",
+    "@types/mongodb": "^3.3.10",
+    "@types/nanoid": "^2.1.0",
+    "@types/request-promise": "^4.1.45",
+    "@types/supertest": "^2.0.8",
+    "body-parser": "^1.19.0",
+    "bson": "^4.0.2",
+    "class-validator": "^0.11.0",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "koa": "^2.11.0",
+    "mocha": "^6.2.2",
+    "mongodb": "^3.3.4",
+    "nanoid": "^2.1.7",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5",
+    "supertest": "^4.0.2",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  }
+}
