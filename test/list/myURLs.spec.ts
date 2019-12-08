@@ -1,17 +1,36 @@
-import { List, Shortener } from "../../src/types"
+import supertest = require("supertest")
 import * as request from 'supertest'
+import { deepStrictEqual, strictEqual } from "assert"
+import { List, Shortener } from "../../src/types"
 import { app, db } from "../../src/main"
-import { deepStrictEqual } from "assert"
 import { DB } from "../../src/db/dbTypes"
 
-describe(List.URL, () => {
+describe(List.URL, async () => {
     afterEach(async () => {
         await db.collection(DB.storeURLs).deleteMany({})
     })
+    after(async () => {
+        await db.collection(DB.storeURLs).deleteMany({})
+        //await db.collection(DB.storeURLs).deleteMany({})
+    })
+    it('for start tests', async () => {
+        await supertest(app)
+            .get('')
+    })
+
+    it('200', async () => {
+        await supertest(app)
+            .get('')
+            .then((res) => strictEqual(res.status, 200))
+            .catch((e) => console.log(e))
+    })
+    
     it('200, empty list', async () => {
-        const res = await request(app)
+        await request(app)
         .get(List.URL)
-        deepStrictEqual(res.body, { myURLs: [] })
+        .then((res) => deepStrictEqual(res.body, { myURLs: [] }))
+        .catch((error) => console.log(error))
+        
     })
     it('200, list', async () => {
         const longURL = `https://www.gismeteo.ru/`

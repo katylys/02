@@ -11,8 +11,10 @@
             "outputCapture": "std",
             "args": [
                 "--timeout",
-                "400000"
+                "400000", 
+                "--exit"
             ],
             "smartStep": false
         }
-    ],
+    ]
+} 

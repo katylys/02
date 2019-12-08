@@ -1,12 +1,15 @@
+import * as request from 'supertest'
+import { strictEqual } from "assert"
 import { Redirection, Shortener } from "../../src/types"
 import { db, app } from "../../src/main"
 import { DB } from "../../src/db/dbTypes"
-import * as request from 'supertest'
-import { strictEqual } from "assert"
 
-describe(Redirection.URL, () => {
-    //setTimeout(() => run(), 6000)
+describe(Redirection.URL, async () => {
     afterEach(async () => {
+        await db.collection(DB.storeURLs).deleteMany({})
+    })
+    after(async () => {
+        //await db.collection(DB.storeCounter).deleteMany({})
         await db.collection(DB.storeURLs).deleteMany({})
     })
     it('400, not found', async () => {

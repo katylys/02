@@ -1,15 +1,24 @@
-FROM node:alpine
+FROM node:alpine as builder
 
 WORKDIR /app
 
-COPY package.json package.json
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-COPY yarn.lock yarn.lock
+COPY src ./src
+RUN yarn build
+RUN yarn install --frozen-lockfile --production
 
-RUN yarn
+FROM node:12.13.0-alpine
+WORKDIR /app
 
-COPY . .
+ENV NODE_ENV=production
+
+COPY package.json ./
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/src ./src
 
 EXPOSE 4000
 
-CMD [ "yarn", "start" ]
+CMD ["node",  "src/main.js"]

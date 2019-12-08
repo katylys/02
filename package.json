@@ -11,7 +11,8 @@
     "test": "mocha",
     "start": "tsc src/main.ts && node src/main.js",
     "dockerServer": "docker-compose up --build",
-    "dockerTest": "cd test/ && docker-compose up --build -d && yarn test --delay --exit && docker-compose down"
+    "dockerTest": "cd test/ && docker-compose up --build -d && sleep 10 && mocha --exit && cd ./test/ && docker-compose down",
+    "stop": "yarn test --exit && docker-compose down"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "body-parser": "^1.19.0",
     "bson": "^4.0.2",
     "class-validator": "^0.11.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "koa": "^2.11.0",

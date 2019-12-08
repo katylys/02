@@ -5,9 +5,9 @@ services:
     image: mongo
     ports:
       - "27017:27017"
-  app:
-    build: .
-    ports:
-      - "4000:4000"
-    depends_on:
-      - mongo
+#  app:
+#    build: .
+#    ports:
+#      - "4000:4000"
+#    depends_on:
+#      - mongo
