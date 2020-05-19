@@ -1,3 +1,4 @@
+
 import { ShortenerReq } from '../validation/validate'
 import { Request, Response } from 'express'
 import { Db } from 'mongodb'
@@ -19,7 +20,7 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const existURL = await db.collection(DB.storeURLs).findOne({ longURL: req.query.longURL })
+    const existURL = await db.collection('URLs').findOne({ longURL: req.query.longURL })
 
     if (existURL) {
         return resp.status(200).send({
@@ -27,31 +28,26 @@ export const Shorten = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const counter = await db.collection<DB.Counter>(DB.storeCounter).findOne({})
-    if (!counter) {
-        return resp.status(500).send({
-            message: 'error of db',
-        })
-    }
+    const counter = await db.collection<DB.Counter>('Counter').findOne({})
     let shortURL = nanoid(counter.count)
-    const existShortURL = await db.collection<DB.URLs>(DB.storeURLs).findOne({ shortURL })
+    const existShortURL = await db.collection<DB.URLs>('URLs').findOne({ shortURL })
 
     if (existShortURL) {
-        const updateCounter = await db.collection<DB.Counter>(DB.storeCounter).findOneAndUpdate({}, {
+        const updateCounter = await db.collection<DB.Counter>('Counter').findOneAndUpdate({}, {
             $inc: {
                 counter: 1,
             },
         },
             { returnOriginal: false },
         )
-        if (!updateCounter.value) {
+        if (!updateCounter) {
             return resp.status(500).send({
                 message: "Error of db",
             })
-        } 
+        }
         shortURL = nanoid(updateCounter.value.count)
     }
-    const insertURL = await db.collection<DB.URLs>(DB.storeURLs).insertOne({
+    const insertURL = await db.collection<DB.URLs>('URLs').insertOne({
         longURL: req.query.longURL,
         shortURL,
         usage: 0,

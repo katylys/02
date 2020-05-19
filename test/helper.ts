@@ -7,14 +7,13 @@ export const createGetTester = (url: string) => {
       const r = supertest(server)
         .get(url)
         .query(q)
-
       if (res != null) {
         return r.expect(status, res)
       }
       return r.expect(status)
     }
   }
-export const testShortenner = createGetTester(Shortener.URL)
-export const testStatistic = createGetTester(Statistic.URL)
-export const testRedirection = createGetTester(Redirection.URL)
-export const testList = createGetTester(List.URL)
+  export const testShortenner = createGetTester(Shortener.URL)
+  export const testStatistic = createGetTester(Statistic.URL)
+  export const testRedirection = createGetTester(Redirection.URL)
+  export const testList = createGetTester(List.URL)

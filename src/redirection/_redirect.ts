@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
-import { Db } from "mongodb"
-import { RedirectionReq } from "../validation/validate"
-import { Redirection } from "../types"
-import { DB } from "../store/dbTypes"
+import { Request, Response } from "express";
+import { Db } from "mongodb";
+import { RedirectionReq } from "../validation/validate";
+import { Redirection } from "../shortener/types";
+
 export const Redirect = async (req: Request, resp: Response, db: Db) => {
     if (!RedirectionReq(req.params as Redirection.Request)) {
         return resp.status(400).send({
@@ -10,7 +10,7 @@ export const Redirect = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const existURL = await db.collection(DB.storeURLs).findOne({
+    const existURL = await db.collection('URLs').findOne({
         shortURL: req.params.shortURL,
     })
 
@@ -20,7 +20,7 @@ export const Redirect = async (req: Request, resp: Response, db: Db) => {
         })
     }
 
-    const updateUsage = await db.collection(DB.storeURLs).findOneAndUpdate({
+    const updateUsage = await db.collection('URLs').findOneAndUpdate({
         shortURL: req.params.shortURL,
     },
         {
@@ -34,5 +34,4 @@ export const Redirect = async (req: Request, resp: Response, db: Db) => {
         })
     }
     resp.redirect(existURL.longURL)
-    return resp.status(200)
 }

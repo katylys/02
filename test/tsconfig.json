@@ -4,7 +4,7 @@
     "removeComments": false,
     "types": [
       "mocha",
-      //"sinon"
+      "sinon"
     ]
   },
   "include": [

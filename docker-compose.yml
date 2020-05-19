@@ -1,13 +1,12 @@
 version: "3"
 services:
-  mongo:
+  mongo03:
     container_name: mongo
     image: mongo
+  app:
+    build: .
     ports:
-      - "27017:27017"
-#  app:
-#    build: .
-#    ports:
-#      - "4000:4000"
-#    depends_on:
-#      - mongo
+      - "4000:4000"
+    depends_on:
+      - mongo03
+

@@ -1,55 +1,41 @@
 import { MongoClient, Db } from 'mongodb'
-import * as createError from 'http-errors'
-import { Server } from 'http'
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
+import * as createError from 'http-errors'
+import { getRouter } from './routing';
 
-import { getRouter } from './routing'
-import { DB } from './db/dbTypes'
-
-export const app = express()
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-//export let db: Db
-export const MONGOURL = 'mongodb://mongo:27017'
-export const mongoDbPromise = MongoClient.connect(MONGOURL, { useUnifiedTopology: true, useNewUrlParser: true })
-.then((cl: MongoClient) => cl)
-
-console.log(mongoDbPromise)
-
 export let db: Db
-export let server: Server
-
-mongoDbPromise
-  .then(async (client) => {
+export const MONGOURL = 'mongodb://mongo:27017'
+export const clientMongo = MongoClient.connect(MONGOURL, { useUnifiedTopology: true, useNewUrlParser: true })
+  .then(client => {
     db = client.db('Shortener02')
-    await db.collection(DB.storeCounter)
-      .insertOne({
-        count: 1,
-      })
-      .catch((error) => console.error(error))
-    db.collection(DB.storeURLs)
-
-    app.use('/', getRouter(db))
-    app.use((_req, _res, next) => {
-      next(createError(404))
+    client.db('Shortener02').collection('Counter').insertOne({
+      count: 1,
     })
-
-    app.set('port', 4000)
-
-    server = app.listen(app.get('port'), () => {
-      console.log(`Express running → PORT ${app.get('port')}`)
-    })
-    return client
-  }).catch((error) => {
-    console.error(error)
+    client.db('Shortener02').collection('URLs')
+  })
+  .catch((e) => {
+    console.error(e)
     process.exit(1)
   })
 
-console.log(mongoDbPromise)
+//app//.use(router.routes())
+//.use(router.allowedMethods())
+//  .use(bodyParser())
 
-//export const db = Promise.all([mongoDbPromise]).then((db) => db).catch((error) => console.log(error))
+app.use('/', getRouter())
+app.use(function (req, res, next) {
+  next(createError(404));
+})
+app.set('port', 4000)
+
+export const server = app.listen(app.get('port'), () => {
+  console.log(`Express running → PORT ${app.get('port')}`);
+})
 
 process.on('SIGINT', () => {
   process.exit(1)
