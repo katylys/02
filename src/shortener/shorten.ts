@@ -1,4 +1,3 @@
-
 import { ShortenerReq } from '../validation/validate'
 import { Request, Response } from 'express'
 import { Db } from 'mongodb'

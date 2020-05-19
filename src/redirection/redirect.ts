@@ -3,7 +3,6 @@ import { Db } from "mongodb"
 import { RedirectionReq } from "../validation/validate"
 import { Redirection } from "../types"
 import { DB } from "../store/dbTypes"
-
 export const Redirect = async (req: Request, resp: Response, db: Db) => {
     if (!RedirectionReq(req.params as Redirection.Request)) {
         return resp.status(400).send({

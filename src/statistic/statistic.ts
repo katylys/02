@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { Db } from "mongodb"
 import { StatisticReq } from "../validation/validate"
 import { DB } from "../store/dbTypes"
-
 export const GetStatistic = async (req: Request, resp: Response, db: Db) => {
     if (!StatisticReq(req.query)) {
         return resp.status(400).send({

@@ -7,7 +7,6 @@ export const createGetTester = (url: string) => {
       const r = supertest(server)
         .get(url)
         .query(q)
-  
       if (res != null) {
         return r.expect(status, res)
       }
